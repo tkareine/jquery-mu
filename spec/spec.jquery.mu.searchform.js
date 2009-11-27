@@ -1,5 +1,4 @@
 (function (JSpec) {
-    var resultedFilterWords = null;   // unfortunately, this cannot be closer to its usage than this
 
     JSpec.describe("jQuery Mu plugin's muSearchForm module", function () {
         describe("#muSearchForm", function () {
@@ -95,60 +94,154 @@
                         expect(searchContext.eq(3)).to(be_hidden);
                     });
 
-                    describe("for its result of user input sanitization for the search", function () {
-                        var proxiedFilter = $.fn.filter;
-                        $.fn.filter = function (query) {
-                            resultedFilterWords.push(query.match(/:muContainsIgnoringCase\((.*)\)/)[1]);
-                            return proxiedFilter.apply(this, arguments);
-                        };
+                    it("should not search at all if sanitizing results to no reasonable user input", function () {
+                        input.simulateSearch("  \t) ");
+                        page.find("table tr:not(:first)").each(function () {
+                            expect($(this)).to(be_visible);
+                        });
+                    });
+
+                    describe("for sanitizing the user input for the search", function () {
+                        before(function () {
+                            orgJQueryFilter = jQuery.fn.filter;
+                        });
+
+                        after(function () {
+                            $.fn.filter = orgJQueryFilter;
+                        });
 
                         before_each(function () {
                             resultedFilterWords = [];
+                            $.fn.filter = function (query) {
+                                resultedFilterWords.push(query.match(/:muContainsIgnoringCase\((.*)\)/)[1]);
+                                return orgJQueryFilter.apply(this, arguments);
+                            };
                         });
 
-                        it("should have no leading or trailing whitespace", function () {
+                        it("should allow empty input", function () {
+                            input.simulateSearch("");
+                            expect(resultedFilterWords).to(eql, []);
+                        });
+
+                        it("should allow input containing just whitespace", function () {
+                            input.simulateSearch(" \t  \n");
+                            expect(resultedFilterWords).to(eql, []);
+                        });
+
+                        it("should remove leading and trailing whitespace", function () {
                             input.simulateSearch("  \tJohn  ");
                             expect(resultedFilterWords).to(eql, ["John"]);
                         });
 
-                        it("should have whitespace characters converted to spaces", function () {
-                            input.simulateSearch("  Michael \t J\n Spoonman\n\n");
-                            expect(resultedFilterWords).to(eql, ["Michael", "J", "Spoonman"]);
+                        it("should remove excess whitespace characters between words", function () {
+                            input.simulateSearch("   J\n Michael \t Spoonman\n\n");
+                            expect(resultedFilterWords).to(eql, ["J", "Michael", "Spoonman"]);
                         });
 
-                        it("should have certain allowed special characters", function () {
+                        it("should sort the search words in ascending order", function () {
+                            input.simulateSearch("zap man bar foo");
+                            expect(resultedFilterWords).to(eql, ["bar", "foo", "man", "zap"]);
+                        });
+
+                        it("should remove duplicate words", function () {
+                            input.simulateSearch("zap man zap");
+                            expect(resultedFilterWords).to(eql, ["man", "zap"]);
+                        });
+
+                        it("should allow certain allowed special characters", function () {
                             input.simulateSearch(".!?#-_");
                             expect(resultedFilterWords).to(eql, [".!?#-_"]);
                         });
 
-                        it("should have no suspectful characters, case HTML tags", function () {
+                        it("should remove suspectful characters, case HTML tags", function () {
                             input.simulateSearch(" <html>here?!</html>");
                             expect(resultedFilterWords).to(eql, ["htmlhere?!html"]);
                         });
 
-                        it("should have no suspectful characters, case semicolon termination", function () {
-                            input.simulateSearch("; rm -fr");
-                            expect(resultedFilterWords).to(eql, ["rm", "-fr"]);
+                        it("should remove suspectful characters, case semicolon termination", function () {
+                            input.simulateSearch("; rm");
+                            expect(resultedFilterWords).to(eql, ["rm"]);
                         });
 
-                        it("should have no suspectful characters, case JavaScript injection", function () {
+                        it("should remove suspectful characters, case JavaScript injection", function () {
                             input.simulateSearch("'call()\"");
                             expect(resultedFilterWords).to(eql, ["call"]);
                         });
 
-                        it("should have no suspectful characters, case jQuery injection", function () {
+                        it("should remove suspectful characters, case jQuery injection", function () {
                             input.simulateSearch(").filter(#important)");
                             expect(resultedFilterWords).to(eql, [".filter#important"]);
                         });
-
-                        it("should not search at all if sanitization results to empty string", function () {
-                            input.simulateSearch("  \t) ");
-                            expect(resultedFilterWords).to(eql, []);
-                            page.find("table tr:not(:first)").each(function () {
-                                expect($(this)).to(be_visible);
-                            });
-                        });
                     });
+                });
+            });
+
+            describe("with expected user options and highlighting enabled", function () {
+                before_each(function () {
+                    searchOptions.highlightedClass = "highlighted";
+                    page.find("table tr:not(:first)").muSearchForm(searchOptions);
+                    input = page.find("input.muSearchFormInput");
+                });
+
+                it("after searching, should show relevant results and highlight matching words", function () {
+                    input.simulateSearch("John");
+                    var searchContext = page.find("table tr:not(:first)");
+                    expect(searchContext.eq(0)).to(be_visible);
+                    expect(searchContext.eq(1)).to(be_hidden);
+                    expect(searchContext.eq(2)).to(be_visible);
+                    expect(searchContext.eq(3)).to(be_hidden);
+                    expect(searchContext.eq(0).find("td:eq(1) span.highlighted").html()).to(equal, "john");
+                    expect(searchContext.eq(0).find("td:eq(2) span.highlighted").html()).to(equal, "John");
+                    expect(searchContext.eq(2).find("td:eq(2) span.highlighted").html()).to(equal, "John");
+                    expect(searchContext.find("span.highlighted")).to(have_length, 3);
+                });
+
+                it("after searching again with new words, should highlight the new matching words", function () {
+                    input.simulateSearch("John");
+                    input.simulateSearch("alan");
+                    var searchContext = page.find("table tr:not(:first)");
+                    expect(searchContext.eq(0)).to(be_hidden);
+                    expect(searchContext.eq(1)).to(be_visible);
+                    expect(searchContext.eq(2)).to(be_hidden);
+                    expect(searchContext.eq(3)).to(be_hidden);
+                    expect(searchContext.eq(1).find("td:eq(1) span.highlighted").html()).to(equal, "alan");
+                    expect(searchContext.eq(1).find("td:eq(2) span.highlighted").html()).to(equal, "Alan");
+                    expect(searchContext.find("span.highlighted")).to(have_length, 2);
+                });
+
+                it("after searching with words where the one word contains the other, should nest the highlighted words", function () {
+                    input.simulateSearch("john oh");
+                    var searchContext = page.find("table tr:not(:first)");
+                    expect(searchContext.eq(0)).to(be_visible);
+                    expect(searchContext.eq(1)).to(be_hidden);
+                    expect(searchContext.eq(2)).to(be_visible);
+                    expect(searchContext.eq(3)).to(be_hidden);
+                    expect(searchContext.eq(0).find("td:eq(1) span.highlighted").html()).to(equal, 'j<span class="highlighted">oh</span>n');
+                    expect(searchContext.eq(0).find("td:eq(2) span.highlighted").html()).to(equal, 'J<span class="highlighted">oh</span>n');
+                    expect(searchContext.eq(2).find("td:eq(2) span.highlighted").html()).to(equal, 'J<span class="highlighted">oh</span>n');
+                    expect(searchContext.find("span.highlighted")).to(have_length, 6);
+                });
+
+                it("after clearing the search, should have no highlights", function () {
+                    input.simulateSearch("John");
+                    input.simulateSearch("");
+                    var searchContext = page.find("table tr:not(:first)");
+                    expect(searchContext.eq(0)).to(be_visible);
+                    expect(searchContext.eq(1)).to(be_visible);
+                    expect(searchContext.eq(2)).to(be_visible);
+                    expect(searchContext.eq(3)).to(be_visible);
+                    expect(searchContext.find("span.highlighted")).to(have_length, 0);
+                });
+
+                it("after clearing the search with words where the one word contains the other, should have no highlights", function () {
+                    input.simulateSearch("john oh");
+                    input.simulateSearch("");
+                    var searchContext = page.find("table tr:not(:first)");
+                    expect(searchContext.eq(0)).to(be_visible);
+                    expect(searchContext.eq(1)).to(be_visible);
+                    expect(searchContext.eq(2)).to(be_visible);
+                    expect(searchContext.eq(3)).to(be_visible);
+                    expect(searchContext.find("span.highlighted")).to(have_length, 0);
                 });
             });
 
@@ -164,6 +257,7 @@
                         return $(matches, elements);
                     }
                     searchOptions.filterElementsToShowWith = filterElementsToShowWithOrBooleanLogic;
+                    searchOptions.highlightedClass = "highlighted";
                     page.find("table tr:not(:first)").muSearchForm(searchOptions);
                     input = page.find("input.muSearchFormInput");
                 });
@@ -175,6 +269,22 @@
                     expect(searchContext.eq(1)).to(be_hidden);
                     expect(searchContext.eq(2)).to(be_visible);
                     expect(searchContext.eq(3)).to(be_hidden);
+                });
+
+                it("after searching, should show relevant results and highlight matching words", function () {
+                    input.simulateSearch("spade nathan");
+                    var searchContext = page.find("table tr:not(:first)");
+                    expect(searchContext.eq(0)).to(be_hidden);
+                    expect(searchContext.eq(1)).to(be_hidden);
+                    expect(searchContext.eq(2)).to(be_visible);
+                    expect(searchContext.eq(3)).to(be_visible);
+                    expect(searchContext.eq(2).find("td:eq(0) span.highlighted").html()).to(equal, "nathan");
+                    expect(searchContext.eq(2).find("td:eq(1) span.highlighted").html()).to(equal, "nathan");
+                    expect(searchContext.eq(2).find("td:eq(2) span.highlighted").html()).to(equal, "Nathan");
+                    expect(searchContext.eq(3).find("td:eq(0) span.highlighted").html()).to(equal, "spade");
+                    expect(searchContext.eq(3).find("td:eq(1) span.highlighted").html()).to(equal, "spade");
+                    expect(searchContext.eq(3).find("td:eq(2) span.highlighted").html()).to(equal, "Spade");
+                    expect(searchContext.find("span.highlighted")).to(have_length, 6);
                 });
             });
         });
