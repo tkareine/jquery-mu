@@ -12,15 +12,15 @@
     <script type="text/javascript">
       //<![CDATA[
       $(function () {
-        $("table tr:not(:first)").muSearchForm({
-          attachWith: function (form) {
-              $("table").before(form);
-          },
-          loadWith: function () {
-              return "<span class='searchNotify'>Searching...</span>";
-          },
-          highlightedClass: "highlighted",
-        });
+          $("table tr:not(:first)").muSearchForm({
+              attachWith: function (form) {
+                  $("table").before(form);
+              },
+              loadWith: function () {
+                  return "<span class='searchNotify'>Searching...</span>";
+              },
+              highlightedClass: "highlighted"
+          });
       });
       //]]>
     </script>
