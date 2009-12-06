@@ -82,8 +82,7 @@ most important options are
 * `loadWith`, a function returning an element to be shown when the search is
   on.
 
-For more options, see the source and tests in
-`spec/spec.jquery.mu.searchform.js`.
+For more options, see the source and examples in the `examples` directory.
 
 
 Legal notes
