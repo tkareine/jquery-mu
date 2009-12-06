@@ -55,7 +55,7 @@
                     };
                 });
 
-                describe("with expected user options", function () {
+                describe("with expected user options and highlighting disabled", function () {
                     before_each(function () {
                         page.find("table tr:not(:first)").muSearchForm(searchOptions);
                         input = page.find("input.muSearchFormInput");
