@@ -15,7 +15,16 @@
 					loadWith:           function () {
 					    return "<span class='searchNotify'>Searching...</span>";
 					},
-					highlightedClass:   "highlighted"
+					highlightedClass:   "highlighted",
+					filterElementsToShowWith: function (elements, searchWords) {
+						matches = [];
+						$.each(searchWords, function (index, searchWord) {
+							var found = elements.filter(":muContainsIgnoringCase(" + searchWord + ")");
+							found.each(function (index) { matches.push(this); });
+						});
+						matches = $.unique(matches);
+						return $(matches, elements);
+					}
 				});
 			});
 		</script>
