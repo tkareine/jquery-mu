@@ -1,5 +1,4 @@
 (function (JSpec) {
-
     JSpec.describe("jQuery Mu plugin's muSearchForm module", function () {
         describe("#muSearchForm", function () {
             before_each(function () {
