@@ -134,17 +134,17 @@
 
                         it("should remove excess whitespace characters between words", function () {
                             input.simulateSearch("   J\n Michael \t Spoonman\n\n");
-                            expect(resultedFilterWords).to(eql, ["J", "Michael", "Spoonman"]);
+                            expect(resultedFilterWords).to(eql, ["Spoonman", "Michael", "J"]);
                         });
 
-                        it("should sort the search words in ascending order", function () {
-                            input.simulateSearch("zap man bar foo");
-                            expect(resultedFilterWords).to(eql, ["bar", "foo", "man", "zap"]);
+                        it("should sort the search words from long to short order", function () {
+                            input.simulateSearch("zapav p apa foobar");
+                            expect(resultedFilterWords).to(eql, ["foobar", "zapav", "apa", "p"]);
                         });
 
                         it("should remove duplicate words", function () {
-                            input.simulateSearch("zap man zap");
-                            expect(resultedFilterWords).to(eql, ["man", "zap"]);
+                            input.simulateSearch("zap mana zap");
+                            expect(resultedFilterWords).to(eql, ["mana", "zap"]);
                         });
 
                         it("should allow certain allowed special characters", function () {
@@ -208,17 +208,19 @@
                     expect(searchContext.find("span.highlighted")).to(have_length, 2);
                 });
 
-                it("after searching with words where the one word contains the other, should nest the highlighted words", function () {
-                    input.simulateSearch("john oh");
+                it("after searching with words where the one word contains the other, should highlight the longest matches possible", function () {
+                    input.simulateSearch("jo john");
                     var searchContext = page.find("table tr:not(:first)");
                     expect(searchContext.eq(0)).to(be_visible);
                     expect(searchContext.eq(1)).to(be_hidden);
                     expect(searchContext.eq(2)).to(be_visible);
                     expect(searchContext.eq(3)).to(be_hidden);
-                    expect(searchContext.eq(0).find("td:eq(1) span.highlighted").html()).to(equal, 'j<span class="highlighted">oh</span>n');
-                    expect(searchContext.eq(0).find("td:eq(2) span.highlighted").html()).to(equal, 'J<span class="highlighted">oh</span>n');
-                    expect(searchContext.eq(2).find("td:eq(2) span.highlighted").html()).to(equal, 'J<span class="highlighted">oh</span>n');
-                    expect(searchContext.find("span.highlighted")).to(have_length, 6);
+                    expect(searchContext.eq(0).find("td:eq(1) span.highlighted").html()).to(equal, 'john');
+                    expect(searchContext.eq(0).find("td:eq(2) span.highlighted").html()).to(equal, 'John');
+                    expect(searchContext.eq(2).find("td:eq(0) span.highlighted").html()).to(equal, 'jo');
+                    expect(searchContext.eq(2).find("td:eq(1) span.highlighted").html()).to(equal, 'jo');
+                    expect(searchContext.eq(2).find("td:eq(2) span.highlighted").html()).to(equal, 'John');
+                    expect(searchContext.find("span.highlighted")).to(have_length, 5);
                 });
 
                 it("after clearing the search, should have no highlights", function () {
