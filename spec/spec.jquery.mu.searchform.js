@@ -183,7 +183,7 @@
                 });
 
                 it("after searching, should show relevant results and highlight matching words", function () {
-                    input.simulateSearch("John");
+                    input.simulateSearch("john");
                     var searchContext = page.find("table tr:not(:first)");
                     expect(searchContext.eq(0)).to(be_visible);
                     expect(searchContext.eq(1)).to(be_hidden);
@@ -193,6 +193,13 @@
                     expect(searchContext.eq(0).find("td:eq(2) span.highlight").html()).to(equal, "John");
                     expect(searchContext.eq(2).find("td:eq(2) span.highlight").html()).to(equal, "John");
                     expect(searchContext.find("span.highlight")).to(have_length, 3);
+                });
+
+                it("for highlighting and the default search, should ignore the character case of the search word", function () {
+                    input.simulateSearch("John");
+                    var searchContext = page.find("table tr:not(:first)");
+                    expect(searchContext.eq(0).find("td:eq(1) span.highlight").html()).to(equal, "john");
+                    expect(searchContext.eq(0).find("td:eq(2) span.highlight").html()).to(equal, "John");
                 });
 
                 it("after searching again with new words, should highlight the new matching words", function () {
