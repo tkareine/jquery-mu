@@ -1,0 +1,5 @@
+Copyright (c) 2009 Tuomas Kareinen, Reaktor Innovations Oy
+
+Portions based on code from jquery.highlight-3.js
+Copyright (c) 2007 Johann Burkard, <http://johannburkard.de>
+Licensed under MIT-style license
