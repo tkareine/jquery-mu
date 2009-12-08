@@ -68,9 +68,10 @@ following:
         attachWith: function (form) {
             context.find("#detail table").before(form);
         },
-        loadWith:   function () {
+        loadWith: function () {
             return "<img src='image/progress_white.gif' alt='Searching...' />";
-        }
+        },
+        highlightClass: "highlight"
     });
 
 The selected elements, `#detail table tr:not(:first)`, are the elements upon
@@ -78,9 +79,11 @@ which the form operates. The form takes options as an object argument. The
 most important options are
 
 * `attachWith`, specifying a function that inserts the form to user-specified
-  place in the DOM, and
+  place in the DOM,
 * `loadWith`, a function returning an element to be shown when the search is
-  on.
+  on, and
+* `highlightClass`, enabling highlighting of matched words and telling which
+  class to use to mark the highlighted words with `span` tags.
 
 For more options, see the source and examples in the `examples` directory.
 

@@ -177,7 +177,7 @@
 
             describe("with expected user options and highlighting enabled", function () {
                 before_each(function () {
-                    searchOptions.highlightedClass = "highlighted";
+                    searchOptions.highlightClass = "highlight";
                     page.find("table tr:not(:first)").muSearchForm(searchOptions);
                     input = page.find("input.muSearchFormInput");
                 });
@@ -189,10 +189,10 @@
                     expect(searchContext.eq(1)).to(be_hidden);
                     expect(searchContext.eq(2)).to(be_visible);
                     expect(searchContext.eq(3)).to(be_hidden);
-                    expect(searchContext.eq(0).find("td:eq(1) span.highlighted").html()).to(equal, "john");
-                    expect(searchContext.eq(0).find("td:eq(2) span.highlighted").html()).to(equal, "John");
-                    expect(searchContext.eq(2).find("td:eq(2) span.highlighted").html()).to(equal, "John");
-                    expect(searchContext.find("span.highlighted")).to(have_length, 3);
+                    expect(searchContext.eq(0).find("td:eq(1) span.highlight").html()).to(equal, "john");
+                    expect(searchContext.eq(0).find("td:eq(2) span.highlight").html()).to(equal, "John");
+                    expect(searchContext.eq(2).find("td:eq(2) span.highlight").html()).to(equal, "John");
+                    expect(searchContext.find("span.highlight")).to(have_length, 3);
                 });
 
                 it("after searching again with new words, should highlight the new matching words", function () {
@@ -203,9 +203,9 @@
                     expect(searchContext.eq(1)).to(be_visible);
                     expect(searchContext.eq(2)).to(be_hidden);
                     expect(searchContext.eq(3)).to(be_hidden);
-                    expect(searchContext.eq(1).find("td:eq(1) span.highlighted").html()).to(equal, "alan");
-                    expect(searchContext.eq(1).find("td:eq(2) span.highlighted").html()).to(equal, "Alan");
-                    expect(searchContext.find("span.highlighted")).to(have_length, 2);
+                    expect(searchContext.eq(1).find("td:eq(1) span.highlight").html()).to(equal, "alan");
+                    expect(searchContext.eq(1).find("td:eq(2) span.highlight").html()).to(equal, "Alan");
+                    expect(searchContext.find("span.highlight")).to(have_length, 2);
                 });
 
                 it("after searching with words where the one word contains the other, should highlight the longest matches possible", function () {
@@ -215,12 +215,12 @@
                     expect(searchContext.eq(1)).to(be_hidden);
                     expect(searchContext.eq(2)).to(be_visible);
                     expect(searchContext.eq(3)).to(be_hidden);
-                    expect(searchContext.eq(0).find("td:eq(1) span.highlighted").html()).to(equal, 'john');
-                    expect(searchContext.eq(0).find("td:eq(2) span.highlighted").html()).to(equal, 'John');
-                    expect(searchContext.eq(2).find("td:eq(0) span.highlighted").html()).to(equal, 'jo');
-                    expect(searchContext.eq(2).find("td:eq(1) span.highlighted").html()).to(equal, 'jo');
-                    expect(searchContext.eq(2).find("td:eq(2) span.highlighted").html()).to(equal, 'John');
-                    expect(searchContext.find("span.highlighted")).to(have_length, 5);
+                    expect(searchContext.eq(0).find("td:eq(1) span.highlight").html()).to(equal, 'john');
+                    expect(searchContext.eq(0).find("td:eq(2) span.highlight").html()).to(equal, 'John');
+                    expect(searchContext.eq(2).find("td:eq(0) span.highlight").html()).to(equal, 'jo');
+                    expect(searchContext.eq(2).find("td:eq(1) span.highlight").html()).to(equal, 'jo');
+                    expect(searchContext.eq(2).find("td:eq(2) span.highlight").html()).to(equal, 'John');
+                    expect(searchContext.find("span.highlight")).to(have_length, 5);
                 });
 
                 it("after clearing the search, should have no highlights", function () {
@@ -231,7 +231,7 @@
                     expect(searchContext.eq(1)).to(be_visible);
                     expect(searchContext.eq(2)).to(be_visible);
                     expect(searchContext.eq(3)).to(be_visible);
-                    expect(searchContext.find("span.highlighted")).to(have_length, 0);
+                    expect(searchContext.find("span.highlight")).to(have_length, 0);
                 });
 
                 it("after clearing the search with words where the one word contains the other, should have no highlights", function () {
@@ -242,7 +242,7 @@
                     expect(searchContext.eq(1)).to(be_visible);
                     expect(searchContext.eq(2)).to(be_visible);
                     expect(searchContext.eq(3)).to(be_visible);
-                    expect(searchContext.find("span.highlighted")).to(have_length, 0);
+                    expect(searchContext.find("span.highlight")).to(have_length, 0);
                 });
             });
 
@@ -258,7 +258,7 @@
                         return $(matches, elements);
                     }
                     searchOptions.filterElementsToShowWith = filterElementsToShowWithOrBooleanLogic;
-                    searchOptions.highlightedClass = "highlighted";
+                    searchOptions.highlightClass = "highlight";
                     page.find("table tr:not(:first)").muSearchForm(searchOptions);
                     input = page.find("input.muSearchFormInput");
                 });
@@ -279,13 +279,13 @@
                     expect(searchContext.eq(1)).to(be_hidden);
                     expect(searchContext.eq(2)).to(be_visible);
                     expect(searchContext.eq(3)).to(be_visible);
-                    expect(searchContext.eq(2).find("td:eq(0) span.highlighted").html()).to(equal, "nathan");
-                    expect(searchContext.eq(2).find("td:eq(1) span.highlighted").html()).to(equal, "nathan");
-                    expect(searchContext.eq(2).find("td:eq(2) span.highlighted").html()).to(equal, "Nathan");
-                    expect(searchContext.eq(3).find("td:eq(0) span.highlighted").html()).to(equal, "spade");
-                    expect(searchContext.eq(3).find("td:eq(1) span.highlighted").html()).to(equal, "spade");
-                    expect(searchContext.eq(3).find("td:eq(2) span.highlighted").html()).to(equal, "Spade");
-                    expect(searchContext.find("span.highlighted")).to(have_length, 6);
+                    expect(searchContext.eq(2).find("td:eq(0) span.highlight").html()).to(equal, "nathan");
+                    expect(searchContext.eq(2).find("td:eq(1) span.highlight").html()).to(equal, "nathan");
+                    expect(searchContext.eq(2).find("td:eq(2) span.highlight").html()).to(equal, "Nathan");
+                    expect(searchContext.eq(3).find("td:eq(0) span.highlight").html()).to(equal, "spade");
+                    expect(searchContext.eq(3).find("td:eq(1) span.highlight").html()).to(equal, "spade");
+                    expect(searchContext.eq(3).find("td:eq(2) span.highlight").html()).to(equal, "Spade");
+                    expect(searchContext.find("span.highlight")).to(have_length, 6);
                 });
             });
         });
