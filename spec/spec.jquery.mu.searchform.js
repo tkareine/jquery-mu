@@ -84,6 +84,11 @@
                         expect(searchContext.eq(3)).to(be_hidden);
                     });
 
+                    it("should not insert extra span elements for highlighting", function () {
+                        input.simulateSearch("john");
+                        expect(searchContext.find("span")).to(be_empty);
+                    });
+
                     it("after searching, should show relevant results, hiding the rest", function () {
                         input.simulateSearch("John");
                         expect(searchContext.eq(0)).to(be_visible);
