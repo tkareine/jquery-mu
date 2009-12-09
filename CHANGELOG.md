@@ -1,4 +1,4 @@
-### Unreleased snapshot
+### 0.2.0 released 2009-12-09
 
 * Search form can highlight matched words
 * Added examples
