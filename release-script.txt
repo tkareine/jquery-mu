@@ -1,8 +1,9 @@
 In order to release, do
 
-$EDITOR CHANGELOG.md                # describe history summary
-rake release version=<version>      # create merged and compressed .js file
-git diff                            # review the changes
+$EDITOR CHANGELOG.md                          # describe history summary
+rake release version=<version>                # create merged and compressed .js file
+git add releases/jquery.mu-<version>.min.js
+git diff                                      # review the changes
 git commit -am "Bump to release-<version>"
 git tag release-<version>
 git push --tags origin master
