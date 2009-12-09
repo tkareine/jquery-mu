@@ -58,6 +58,7 @@
                     before_each(function () {
                         page.find("table tr:not(:first)").muSearchForm(searchOptions);
                         input = page.find("input.muSearchFormInput");
+                        searchContext = page.find("table tr:not(:first)");
                     });
 
                     it("when searching, should show loader element", function () {
@@ -77,7 +78,6 @@
 
                     it("when searching, should use Boolean AND operator for multiple words in search input, by default", function () {
                         input.simulateSearch("john nathan");
-                        var searchContext = page.find("table tr:not(:first)");
                         expect(searchContext.eq(0)).to(be_hidden);
                         expect(searchContext.eq(1)).to(be_hidden);
                         expect(searchContext.eq(2)).to(be_visible);
@@ -86,7 +86,6 @@
 
                     it("after searching, should show relevant results, hiding the rest", function () {
                         input.simulateSearch("John");
-                        var searchContext = page.find("table tr:not(:first)");
                         expect(searchContext.eq(0)).to(be_visible);
                         expect(searchContext.eq(1)).to(be_hidden);
                         expect(searchContext.eq(2)).to(be_visible);
@@ -180,11 +179,11 @@
                     searchOptions.highlightClass = "highlight";
                     page.find("table tr:not(:first)").muSearchForm(searchOptions);
                     input = page.find("input.muSearchFormInput");
+                    searchContext = page.find("table tr:not(:first)");
                 });
 
                 it("after searching, should show relevant results and highlight matching words", function () {
                     input.simulateSearch("john");
-                    var searchContext = page.find("table tr:not(:first)");
                     expect(searchContext.eq(0)).to(be_visible);
                     expect(searchContext.eq(1)).to(be_hidden);
                     expect(searchContext.eq(2)).to(be_visible);
@@ -197,7 +196,6 @@
 
                 it("for highlighting and the default search, should ignore the character case of the search word", function () {
                     input.simulateSearch("John");
-                    var searchContext = page.find("table tr:not(:first)");
                     expect(searchContext.eq(0).find("td:eq(1) span.highlight").html()).to(equal, "john");
                     expect(searchContext.eq(0).find("td:eq(2) span.highlight").html()).to(equal, "John");
                 });
@@ -205,7 +203,6 @@
                 it("after searching again with new words, should highlight the new matching words", function () {
                     input.simulateSearch("John");
                     input.simulateSearch("alan");
-                    var searchContext = page.find("table tr:not(:first)");
                     expect(searchContext.eq(0)).to(be_hidden);
                     expect(searchContext.eq(1)).to(be_visible);
                     expect(searchContext.eq(2)).to(be_hidden);
@@ -217,7 +214,6 @@
 
                 it("after searching with words where the one word contains the other, should highlight the longest matches possible", function () {
                     input.simulateSearch("jo john");
-                    var searchContext = page.find("table tr:not(:first)");
                     expect(searchContext.eq(0)).to(be_visible);
                     expect(searchContext.eq(1)).to(be_hidden);
                     expect(searchContext.eq(2)).to(be_visible);
@@ -233,7 +229,6 @@
                 it("after clearing the search, should have no highlights", function () {
                     input.simulateSearch("John");
                     input.simulateSearch("");
-                    var searchContext = page.find("table tr:not(:first)");
                     expect(searchContext.eq(0)).to(be_visible);
                     expect(searchContext.eq(1)).to(be_visible);
                     expect(searchContext.eq(2)).to(be_visible);
@@ -244,7 +239,6 @@
                 it("after clearing the search with words where the one word contains the other, should have no highlights", function () {
                     input.simulateSearch("john oh");
                     input.simulateSearch("");
-                    var searchContext = page.find("table tr:not(:first)");
                     expect(searchContext.eq(0)).to(be_visible);
                     expect(searchContext.eq(1)).to(be_visible);
                     expect(searchContext.eq(2)).to(be_visible);
@@ -268,11 +262,11 @@
                     searchOptions.highlightClass = "highlight";
                     page.find("table tr:not(:first)").muSearchForm(searchOptions);
                     input = page.find("input.muSearchFormInput");
+                    searchContext = page.find("table tr:not(:first)");
                 });
 
                 it("should allow overriding the default filtering function to show the searched elements", function () {
                     input.simulateSearch("john nathan");
-                    var searchContext = page.find("table tr:not(:first)");
                     expect(searchContext.eq(0)).to(be_visible);
                     expect(searchContext.eq(1)).to(be_hidden);
                     expect(searchContext.eq(2)).to(be_visible);
@@ -281,7 +275,6 @@
 
                 it("after searching, should show relevant results and highlight matching words", function () {
                     input.simulateSearch("spade nathan");
-                    var searchContext = page.find("table tr:not(:first)");
                     expect(searchContext.eq(0)).to(be_hidden);
                     expect(searchContext.eq(1)).to(be_hidden);
                     expect(searchContext.eq(2)).to(be_visible);
