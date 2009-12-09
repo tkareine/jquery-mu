@@ -1,0 +1,8 @@
+In order to release, do
+
+$EDITOR CHANGELOG.rdoc              # describe history summary
+rake release version=<version>      # create merged and compressed .js file
+git diff                            # review the changes
+git commit -am "Bump to release-<version>"
+git tag release-<version>
+git push --tags origin master
