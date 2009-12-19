@@ -7,9 +7,9 @@ grab it and possibly even modify it to your particular needs.
 
 The collection is divided into modules. Besides jQuery 1.3, the only
 dependency each module requires is the core module of the collection,
-`jquery.mu.js`.
+[jquery.mu.js](lib/jquery.mu.js).
 
-The modules are located under the `lib` directory.
+The modules are located under the [lib](lib/) directory.
 
 Queue
 -----
@@ -50,7 +50,7 @@ jQuery's` Ajax function when the time is right:
 
     $.ajax(request)
 
-For an example, see `example/action_processing_with_queue.html`.
+See [the example](example/action_processing_with_queue.html).
 
 SearchForm
 ----------
@@ -86,9 +86,12 @@ most important options are
 * `highlightClass`, enabling highlighting of matched words and telling which
   class to use to mark the highlighted words with `span` tags.
 
-For more options, see the source and examples in the `examples` directory.
+For more options, see the [source](lib/jquery.mu.searchform.js) and examples:
+
+* [simple example](example/table_with_simple_searchform.html),
+* [complex example](example/table_with_complex_searchform.html).
 
 Legal notes
 -----------
 
-See `MIT-LICENSE.txt` and `NOTICE.txt` in this directory.
+See [MIT-LICENSE.txt](MIT-LICENSE.txt) and [NOTICE.txt](NOTICE.txt).
