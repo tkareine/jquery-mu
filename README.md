@@ -50,6 +50,7 @@ jQuery's` Ajax function when the time is right:
 
     $.ajax(request)
 
+For an example, see `example/action_processing_with_queue.html`.
 
 SearchForm
 ----------
@@ -86,7 +87,6 @@ most important options are
   class to use to mark the highlighted words with `span` tags.
 
 For more options, see the source and examples in the `examples` directory.
-
 
 Legal notes
 -----------
