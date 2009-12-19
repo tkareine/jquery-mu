@@ -45,8 +45,8 @@ For queuing an Ajax request:
     var request = { ... };
     $.mu.queue.ajax(request);
 
-Behind the scenes, syntax above passes `request` as a parameter to jQuery's`
-Ajax function when the time is right:
+Behind the scenes, the syntax above passes `request` as a parameter to
+jQuery's` Ajax function when the time is right:
 
     $.ajax(request)
 
