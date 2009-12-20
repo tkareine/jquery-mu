@@ -11,42 +11,68 @@
 
     <script type="text/javascript">
       //<![CDATA[
-      function endWork(item) {
+      function setItemState(item, state) {
           item.removeClass("loading");
+          item.removeClass("working");
+          item.addClass(state);
       }
 
-      function startWork(item) {
-          item.addClass("loading");
+      function endWork(item, signalCompletionTo) {
+          setItemState(item, "finished");
+          if (signalCompletionTo) {
+              signalCompletionTo.complete();
+          }
+      }
+
+      function startWork(item, signalCompletionTo) {
+          setItemState(item, "working");
           setTimeout(function () {
-              endWork(item);
+              endWork(item, signalCompletionTo);
           }, 1500);
       }
 
-      function doWork(item) {
-          startWork(item);
+      function doWork(item, signalCompletionTo) {
+          startWork(item, signalCompletionTo);
+      }
+
+      function setClickAction(selector, action) {
+          $(selector).wrapInner("<a href='#'>").find("a").click(action);
       }
 
       $(function () {
-          $("ul li").wrapInner("<a href='#'>").find("a").click(function () {
+          setClickAction("#nonqueuedItems li", function () {
+              doWork($(this).parent());
+          });
+
+          setClickAction("#queuedItems li", function () {
               var item = $(this).parent();
-              $.mu.queue.action(function () {
-                  doWork(item);
-              });
+              setItemState(item, "loading");
+              var queuedAction = function () {
+                  doWork(item, queuedAction);
+              }
+              queuedAction.callsComplete = true;
+              $.mu.queue.action(queuedAction);
           });
       });
       //]]>
     </script>
 
     <style type="text/css">
-      #items {
+      .items {
         width: 8em;
       }
-      #items a {
+      .items a {
         color: black;
         font-weight: bold;
       }
-      #items .loading {
-        background: gray;
+      .items .finished {
+        background: green;
+      }
+      .items .loading {
+        background: yellow;
+      }
+      .items .working {
+        background: red;
       }
     </style>
 
@@ -57,7 +83,19 @@
 
     <p>Selecting an item appends an action into the queue. The queue will be processed in sequence, one action at a time.</p>
 
-    <ul id="items">
+    <h2>Nonqueued items</h2>
+
+    <ul id="nonqueuedItems" class="items">
+      <li>First item</li>
+      <li>Second item</li>
+      <li>Third item</li>
+      <li>Fourth item</li>
+      <li>Fifth item</li>
+    </ul>
+
+    <h2>Queued items</h2>
+
+    <ul id="queuedItems" class="items">
       <li>First item</li>
       <li>Second item</li>
       <li>Third item</li>
