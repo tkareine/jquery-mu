@@ -50,7 +50,7 @@ jQuery's` Ajax function when the time is right:
 
     $.ajax(request)
 
-For an example, see `example/action_processing_with_queue.html`.
+See [the example](http://tuomas.github.com/jquery-mu/example/action_processing_with_queue.html).
 
 SearchForm
 ----------
@@ -86,7 +86,10 @@ most important options are
 * `highlightClass`, enabling highlighting of matched words and telling which
   class to use to mark the highlighted words with `span` tags.
 
-For more options, see the source and examples in the `examples` directory.
+For more options, see the source and examples:
+
+* [simple](http://tuomas.github.com/jquery-mu/example/table_with_simple_searchform.html),
+* [complex](http://tuomas.github.com/jquery-mu/example/table_with_complex_searchform.html).
 
 Legal notes
 -----------
