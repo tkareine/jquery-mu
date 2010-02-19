@@ -1,5 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
     <head>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
         <link type="text/css" rel="stylesheet" href="../../jspec/lib/jspec.css" />
 
         <script src="../vendor/jquery-1.3.2.js"></script>
@@ -12,14 +16,13 @@
         <script src="../../jspec/lib/jspec.jquery.js"></script>
         <script src="helper.js"></script>
 
-        <script src="spec.jquery.mu.js"></script>
-        <script src="spec.jquery.mu.queue.js"></script>
-        <script src="spec.jquery.mu.searchform.js"></script>
-
         <script>
             function runSuites() {
                 JSpec
-                    .run()
+                    .exec("spec.jquery.mu.js")
+                    .exec("spec.jquery.mu.queue.js")
+                    .exec("spec.jquery.mu.searchform.js")
+                    .run({ fixturePath: "fixtures" })
                     .report();
             }
         </script>
