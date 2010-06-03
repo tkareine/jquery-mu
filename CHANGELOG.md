@@ -1,4 +1,4 @@
-### Unreleased snapshot
+### 0.2.2 released 2010-06-04
 
 * Compatible with jQuery 1.4. Tested with jQuery versions 1.3.2 and 1.4.2.
 
