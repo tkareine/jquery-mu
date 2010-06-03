@@ -94,4 +94,4 @@ For more options, see the source and examples:
 Legal notes
 -----------
 
-See `MIT-LICENSE.txt` and `NOTICE.txt` in this directory.
+See `LICENSE.txt` and `NOTICE.txt` in this directory.
