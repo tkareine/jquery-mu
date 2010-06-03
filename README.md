@@ -5,11 +5,12 @@ Mu is a collection of plugins for jQuery. Their guiding design principle is
 simplicity and ease-of-use. If you like some parts of the collection, just
 grab it and possibly even modify it to your particular needs.
 
-The collection is divided into modules. Besides jQuery 1.3, the only
-dependency each module requires is the core module of the collection,
-`jquery.mu.js`.
+The collection is divided into modules. Besides jQuery, the only dependency
+each module requires is the core module of the collection, `jquery.mu.js`.
 
 The modules are located under the `lib` directory.
+
+Mu is compatible with jQuery 1.3.2 and 1.4.
 
 Queue
 -----
