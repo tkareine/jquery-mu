@@ -38,7 +38,7 @@ task :test => [:lint, :spec]
 
 desc "Search unfinished parts of source code"
 task :todo do
-  FileList["lib/**/*.js", "spec/**/*.js", "**/*.md", "**/*.txt"].egrep /(TODO|FIXME)/
+  FileList["lib/**/*.js", "test/**/*.js", "**/*.md", "**/*.txt"].egrep /(TODO|FIXME)/
 end
 
 task :default => :test
