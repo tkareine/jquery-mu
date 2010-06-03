@@ -12,7 +12,7 @@ def minify(assets, to)
     assets.each do |asset|
       puts "  #{asset}"
       IO.foreach(asset) do |line|
-        pipe << line
+        pipe << (block_given? ? yield(line) : line)
       end
     end
   end
@@ -20,7 +20,9 @@ end
 
 desc "Make a release"
 task :release do
-  minify Dir["lib/**/*.js"], "releases/jquery.mu-#{version}.min.js"
+  minify Dir["lib/**/*.js"], "releases/jquery.mu-#{version}.min.js" do |line|
+    line.gsub "$VERSION", version
+  end
 end
 
 desc "Run code quality checks"
