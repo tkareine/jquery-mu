@@ -58,8 +58,8 @@ JSpec.describe("jQuery Mu plugin's queue module", function () {
         });
 
         it("should preserve the original #complete method of an action which signals its completion", function () {
-            var action = function () {};
-            var originalCompleteWasCalled = false;
+            var action = function () {},
+                originalCompleteWasCalled = false;
             action.complete = function () { originalCompleteWasCalled = true; };
             action.callsComplete = true;
 
