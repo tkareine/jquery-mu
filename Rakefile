@@ -8,7 +8,7 @@ def minify(assets, to)
   type = assets.first[/\.([^.]+)$/, 1]
   raise ArgumentError, "Unknown asset type" if type.nil?
   puts "Minifying #{type} type assets to #{to}..."
-  IO.popen("java -jar #{YUI_COMPRESSOR_JAR} -v --charset=utf-8 --type #{type} -o #{to}", "w") do |pipe|
+  IO.popen("java -jar #{YUI_COMPRESSOR_JAR} -v --charset=utf-8 --type=#{type} -o #{to}", "w") do |pipe|
     assets.each do |asset|
       puts "  #{asset}"
       IO.foreach(asset) do |line|
