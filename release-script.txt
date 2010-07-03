@@ -6,4 +6,7 @@ git add releases/jquery.mu-<version>.min.js
 git diff                                      # review the changes
 git commit -am "Bump to release-<version>"
 git tag release-<version>
-git push --tags origin master
+git checkout gh-pages
+git merge --ff-only master
+git checkout master
+git push --tags origin master gh-pages
