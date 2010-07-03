@@ -231,13 +231,20 @@
                     expect(searchContext.find("span.highlight")).to(have_length, 5);
                 });
 
-                it("after searching with words where there are multiple matches in a single text node, should highlight all the matches", function () {
+                it("after searching with a word that results in multiple matches in a single text node, should highlight all the matches", function () {
                     input.simulateSearch("o");
                     expect(searchContext.eq(0)).to(be_visible);
                     expect(searchContext.eq(1)).to(be_visible);
                     expect(searchContext.eq(0).find("td:eq(1)").html()).to(equal, 'j<span class="highlight">o</span>hn.g<span class="highlight">o</span>re@hard.c<span class="highlight">o</span>m');
-                    expect(searchContext.eq(1).find("td:eq(1)").html()).to(equal, 'alan.sp<span class="highlight">o</span><span class="highlight">o</span>nman@drums.net');
-                    expect(searchContext.find("span.highlight")).to(have_length, 21);
+                    expect(searchContext.eq(1).find("td:eq(1)").html()).to(equal, 'alan.<span class="highlight">o</span>.sp<span class="highlight">o</span><span class="highlight">o</span>nman@drumsr<span class="highlight">o</span>ck.net');
+                    expect(searchContext.find("span.highlight")).to(have_length, 24);
+                });
+
+                it("after searching with multiple words that results in multiple matches in a single text node, should highlight all the matches", function () {
+                    input.simulateSearch("o oon");
+                    expect(searchContext.eq(1)).to(be_visible);
+                    expect(searchContext.eq(1).find("td:eq(1)").html()).to(equal, 'alan.<span class="highlight">o</span>.sp<span class="highlight">oon</span>man@drumsr<span class="highlight">o</span>ck.net');
+                    expect(searchContext.find("span.highlight")).to(have_length, 6);
                 });
 
                 it("after clearing the search, should have no highlights", function () {
