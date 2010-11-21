@@ -51,7 +51,7 @@ jQuery's` Ajax function when the time is right:
 
     $.ajax(request)
 
-See [the example](http://tuomas.github.com/jquery-mu/example/action_processing_with_queue.html).
+See [the example](http://tkareine.github.com/jquery-mu/example/action_processing_with_queue.html).
 
 SearchForm
 ----------
@@ -89,8 +89,8 @@ most important options are
 
 For more options, see the source and examples:
 
-* [simple](http://tuomas.github.com/jquery-mu/example/table_with_simple_searchform.html),
-* [complex](http://tuomas.github.com/jquery-mu/example/table_with_complex_searchform.html).
+* [simple](http://tkareine.github.com/jquery-mu/example/table_with_simple_searchform.html),
+* [complex](http://tkareine.github.com/jquery-mu/example/table_with_complex_searchform.html).
 
 Legal notes
 -----------
