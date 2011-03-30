@@ -1,7 +1,7 @@
 version = ENV["version"] || "snapshot"
 
-RHINO_JAR = File.expand_path "~/lib/jars/js.jar"
-YUI_COMPRESSOR_JAR = File.expand_path "~/lib/jars/yuicompressor.jar"
+RHINO_JAR           = ENV['MU_RHINO_JAR']           || File.expand_path('~/lib/jar/rhino.jar')
+YUI_COMPRESSOR_JAR  = ENV['MU_YUI_COMPRESSOR_JAR']  || File.expand_path('~/lib/jar/yuicompressor.jar')
 
 def minify(assets, to)
   return if assets.empty?
